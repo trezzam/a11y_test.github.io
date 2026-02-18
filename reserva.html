@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva - Casa Rural</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h2>Reserva tu estancia</h2>
+        <div id="booking-form">
+            <input type="text" id="checkin" placeholder="Fecha entrada (DD/MM/YYYY)" onchange="enableNext('checkout')">
+            
+            <input type="text" id="checkout" placeholder="Fecha salida" disabled onchange="enableNext('people')">
+            
+            <input type="number" id="people" placeholder="Nº Personas" disabled onchange="enableNext('room')">
+            
+            <select id="room" disabled onchange="startSearch()">
+                <option value="">Selecciona habitación</option>
+                <option>Amapola</option>
+                <option>Lavanda</option>
+                <option>Margarita</option>
+            </select>
+
+            <div id="loader" style="display:none;" class="blink">Buscando...</div>
+        </div>
+    </main>
+    <script>
+        function enableNext(id) { document.getElementById(id).disabled = false; }
+        function startSearch() { 
+            document.getElementById('loader').style.display = 'block';
+            // Error: El texto "Buscando..." no es anunciado a lectores de pantalla (Falta aria-live)
+        }
+    </script>
+</body>
+</html>
