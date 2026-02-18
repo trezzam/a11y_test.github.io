@@ -2,8 +2,50 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Casa Rural Teruel</title>
+    <title>La Casa - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Botón vistoso pero con contraste insuficiente (Blanco sobre cian neón) */
+        /* Ratio aproximado 1.5:1 (Falla estrepitosamente el 4.5:1 de la WCAG AA) */
+        .btn-vistoso {
+            background-color: #00ffd5; 
+            color: #ffffff; 
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 50px;
+            margin: 20px 0;
+        }
+
+        /* Estilos para las bandas-tabla */
+        .tabla-maquetacion {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .banda-texto {
+            width: 50%;
+            padding: 40px;
+            background-color: #fcfcfc;
+        }
+        .banda-img {
+            width: 50%;
+            padding: 0;
+        }
+        .banda-img img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Tabla de precios mal hecha */
+        .tabla-precios {
+            width: 80%;
+            margin: 50px auto;
+            border: 1px solid #000;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -26,20 +68,68 @@
     </header>
 
     <main>
-        <section class="hero">
-            <h1>Bienvenidos a la calma de Teruel</h1>
-            <p style="color: #ccc;">Disfruta de una estancia inolvidable.</p> <button onclick="location.href='reserva.html'">RESERVAR YA</button>
-        </section>
+        <div style="text-align: center; padding: 50px;">
+            <h1>Un descanso real en Teruel</h1>
+            <button class="btn-vistoso" onclick="location.href='reserva.html'">Reservar ya</button>
+        </div>
 
-        <section class="rooms">
-            <div class="room"><h3>Amapola</h3><p>Habitación doble con vistas.</p></div>
-            <div class="room"><h3>Lavanda</h3><p>Suite con chimenea.</p></div>
-            <div class="room"><h3>Margarita</h3><p>Ideal para familias.</p></div>
-        </section>
+        <table class="tabla-maquetacion">
+            <tr>
+                <td class="banda-texto">
+                    <h2>Amapola</h2>
+                    <p>Nuestra habitación más luminosa. Disfruta del amanecer desde tu cama.</p>
+                </td>
+                <td class="banda-img">
+                    <img src="habitacion_amapola.png"> </td>
+            </tr>
+            <tr>
+                <td class="banda-img">
+                    <img src="habitacion_lavanda.png">
+                </td>
+                <td class="banda-texto">
+                    <h2>Lavanda</h2>
+                    <p>El refugio perfecto para el invierno. Calidez y confort.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="banda-texto">
+                    <h2>Margarita</h2>
+                    <p>Espacio amplio con zona de juegos y literas de madera.</p>
+                </td>
+                <td class="banda-img">
+                    <img src="habitacion_margarita.png">
+                </td>
+            </tr>
+        </table>
+
+        <div style="padding: 40px; text-align: center;">
+            <h3>Tarifas</h3>
+            <table class="tabla-precios">
+                <tr>
+                    <td></td>
+                    <td><b>T. Baja</b></td>
+                    <td><b>T. Alta</b></td>
+                </tr>
+                <tr>
+                    <td><b>Amapola</b></td>
+                    <td>60€</td>
+                    <td>95€</td>
+                </tr>
+                <tr>
+                    <td><b>Lavanda</b></td>
+                    <td colspan="2" style="text-align: center;">120€ (Precio único)</td>
+                </tr>
+                <tr>
+                    <td><b>Margarita</b></td>
+                    <td>80€</td>
+                    <td>110€</td>
+                </tr>
+            </table>
+        </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 Casa Rural Teruel</p>
+        <p>&copy; 2026 Casa Rural El Grullo - Teruel</p>
     </footer>
 </body>
 </html>
