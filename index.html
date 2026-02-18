@@ -1,50 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Home – Ejemplo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Casa Rural Teruel</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+    <header>
+        <img src="logo.png" id="logo"> <nav>
+            <ul class="main-menu">
+                <li><a href="index.html">La casa</a></li>
+                <li class="has-submenu">
+                    <a href="actividades.html">Actividades</a>
+                    <ul class="submenu"> <li><a href="mar.html">Mar</a></li>
+                        <li><a href="montana.html">Montaña</a></li>
+                        <li><a href="en-casa.html">En la casa</a></li>
+                    </ul>
+                </li>
+                <li><a href="reserva.html">Reserva</a></li>
+                <li><a href="contacto.html">Contáctanos</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <header>
-    <a href="#contenido">Saltar al contenido principal</a>
-    <h1>Mi sitio web</h1>
-    <nav aria-label="Navegación principal">
-      <ul>
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Servicios</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-    </nav>
-  </header>
+    <main>
+        <section class="hero">
+            <h1>Bienvenidos a la calma de Teruel</h1>
+            <p style="color: #ccc;">Disfruta de una estancia inolvidable.</p> <button onclick="location.href='reserva.html'">RESERVAR YA</button>
+        </section>
 
-  <main id="contenido">
-    <h2>Bienvenido!</h2>
-    <p>
-      Esta es una página de inicio de ejemplo en HTML básico.
-    </p>
+        <section class="rooms">
+            <div class="room"><h3>Amapola</h3><p>Habitación doble con vistas.</p></div>
+            <div class="room"><h3>Lavanda</h3><p>Suite con chimenea.</p></div>
+            <div class="room"><h3>Margarita</h3><p>Ideal para familias.</p></div>
+        </section>
+    </main>
 
-    <section>
-      <h3>Servicios</h3>
-      <p>
-        Ofrecemos soluciones digitales accesibles y centradas en el usuario.
-      </p>
-    </section>
-
-    <section>
-      <h3>Contacto</h3>
-      <p>
-        Escríbenos para más información.
-      </p>
-      <button type="button">Contactar</button>
-    </section>
-  </main>
-
-  <footer>
-    <p>&copy; 2026 Mi sitio web</p>
-  </footer>
-
+    <footer>
+        <p>&copy; 2026 Casa Rural Teruel</p>
+    </footer>
 </body>
 </html>
