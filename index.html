@@ -5,6 +5,24 @@
     <title>La Casa - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Banner con imagen de fondo mediante CSS */
+        #hero-banner {
+            width: 100%;
+            height: 200px; /* Altura solicitada */
+            background-image: url('banner_rural.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+/*
+        .texto-banner {
+            color: #ffffff;
+            font-size: 24px;
+            padding: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: bold;
+        }
+*/        
         /* Botón vistoso pero con contraste insuficiente (Blanco sobre cian neón) */
         /* Ratio aproximado 1.5:1 (Falla estrepitosamente el 4.5:1 de la WCAG AA) */
         .btn-vistoso {
@@ -67,6 +85,7 @@
         </nav>
     </header>
 
+    <div id="hero-banner"></div>
     <main>
         <div style="text-align: center; padding: 50px;">
             <h1>Un descanso real en Teruel</h1>
