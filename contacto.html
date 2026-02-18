@@ -2,8 +2,27 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Contacto</title>
+    <title>Contacto - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Errores visuales solicitados */
+        .error-border {
+            border: 2px solid red !important;
+        }
+        .error-text {
+            color: red;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none; /* Se activa por JS */
+        }
+        .form-container {
+            max-width: 500px;
+            margin-top: 30px;
+        }
+        .field-group {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -12,7 +31,7 @@
             <ul class="main-menu">
                 <li><a href="index.html">La casa</a></li>
                 <li class="has-submenu">
-                    <a href="#">Actividades</a>
+                    <a href="actividades.html">Actividades</a>
                     <ul class="submenu">
                         <li><a href="mar.html">Mar</a></li>
                         <li><a href="montana.html">Montaña</a></li>
@@ -24,13 +43,57 @@
             </ul>
         </nav>
     </header>
+
     <main>
-        <h2>Escríbenos</h2>
-        <form>
-            <input type="text" placeholder="Nombre"> 
-            <input type="email" placeholder="Email">
-            <textarea placeholder="Mensaje"></textarea>
-            <div class="div-button" onclick="alert('Enviado')">Enviar Mensaje</div> </form>
+        <h1>Contáctanos</h1>
+        <p>Si tienes alguna duda sobre nuestra casa en Teruel, escríbenos.</p>
+
+        <div class="form-container">
+            <div class="field-group">
+                <input type="text" id="nombre" placeholder="Nombre completo" style="width: 100%;">
+            </div>
+
+            <div class="field-group">
+                <input type="email" id="email" placeholder="Correo electrónico" style="width: 100%;">
+                <div id="error-msg-email" class="error-text">Este campo es obligatorio</div>
+            </div>
+
+            <div class="field-group">
+                <textarea placeholder="Tu mensaje" style="width: 100%; height: 100px;"></textarea>
+            </div>
+
+            <div class="div-button" onclick="validarContacto()">Enviar Mensaje</div>
+        </div>
     </main>
+
+    <script>
+        function validarContacto() {
+            const inputNombre = document.getElementById('nombre');
+            const inputEmail = document.getElementById('email');
+            const textoErrorEmail = document.getElementById('error-msg-email');
+
+            // Limpiar estados anteriores
+            inputNombre.classList.remove('error-border');
+            textoErrorEmail.style.display = 'none';
+
+            let valido = true;
+
+            // Validación Primer Campo (Borde rojo)
+            if (inputNombre.value.trim() === "") {
+                inputNombre.classList.add('error-border');
+                valido = false;
+            }
+
+            // Validación Segundo Campo (Texto error)
+            if (inputEmail.value.trim() === "") {
+                textoErrorEmail.style.display = 'block';
+                valido = false;
+            }
+
+            if (valido) {
+                alert("¡Gracias! Nos pondremos en contacto pronto.");
+            }
+        }
+    </script>
 </body>
 </html>
