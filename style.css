@@ -1,0 +1,26 @@
+body { font-family: sans-serif; color: #555; }
+
+/* Error: Menú no accesible por teclado */
+.submenu { display: none; position: absolute; background: white; list-style: none; }
+.has-submenu:hover .submenu { display: block; }
+
+/* Error: Botón personalizado sin feedback visual de foco */
+.div-button {
+    background: #8b0000;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    width: 100px;
+    text-align: center;
+}
+
+/* Error: Animación molesta sin opción de parar */
+.blink {
+    animation: blinker 1s linear infinite;
+    color: red;
+}
+@keyframes blinker { 50% { opacity: 0; } }
+
+/* Estilo básico horizontal */
+.main-menu { display: flex; gap: 20px; list-style: none; background: #eee; padding: 10px; }
+nav a { text-decoration: none; color: inherit; }
