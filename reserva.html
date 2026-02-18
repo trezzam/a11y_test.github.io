@@ -2,8 +2,71 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reserva - Casa Rural</title>
+    <title>Reserva - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Diseño en una única fila */
+        .booking-row {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            gap: 10px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto; /* Error potencial de Reflow */
+        }
+
+        /* Grupo de fecha (Día/Mes/Año + Botón) */
+        .date-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+        }
+
+        .date-group input {
+            width: 45px;
+            text-align: center;
+        }
+
+        .date-group input.year {
+            width: 65px;
+        }
+
+        .cal-btn {
+            background: none;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            padding: 5px;
+            font-size: 18px;
+        }
+
+        /* Calendario Dropdown falso */
+        .calendar-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 100;
+            padding: 10px;
+            width: 200px;
+        }
+
+        .field-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label-fake {
+            font-size: 12px;
+            margin-bottom: 5px;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -12,7 +75,7 @@
             <ul class="main-menu">
                 <li><a href="index.html">La casa</a></li>
                 <li class="has-submenu">
-                    <a href="#">Actividades</a>
+                    <a href="actividades.html">Actividades</a>
                     <ul class="submenu">
                         <li><a href="mar.html">Mar</a></li>
                         <li><a href="montana.html">Montaña</a></li>
@@ -24,30 +87,84 @@
             </ul>
         </nav>
     </header>
-    <main>
-        <h2>Reserva tu estancia</h2>
-        <div id="booking-form">
-            <input type="text" id="checkin" placeholder="Fecha entrada (DD/MM/YYYY)" onchange="enableNext('checkout')">
-            
-            <input type="text" id="checkout" placeholder="Fecha salida" disabled onchange="enableNext('people')">
-            
-            <input type="number" id="people" placeholder="Nº Personas" disabled onchange="enableNext('room')">
-            
-            <select id="room" disabled onchange="startSearch()">
-                <option value="">Selecciona habitación</option>
-                <option>Amapola</option>
-                <option>Lavanda</option>
-                <option>Margarita</option>
-            </select>
 
-            <div id="loader" style="display:none;" class="blink">Buscando...</div>
+    <main>
+        <h1>Reserva tu estancia</h1>
+        
+        <div class="booking-row">
+            <div class="field-container">
+                <span class="label-fake">Entrada</span>
+                <div class="date-group">
+                    <input type="text" placeholder="DD" id="in-d">
+                    <input type="text" placeholder="MM" id="in-m">
+                    <input type="text" placeholder="AAAA" id="in-a" class="year" oninput="checkStep1()">
+                    <button class="cal-btn" onclick="toggleCal('cal1')">📅</button>
+                    <div id="cal1" class="calendar-dropdown">Diciembre 2026...</div>
+                </div>
+            </div>
+
+            <div class="field-container">
+                <span class="label-fake">Salida</span>
+                <div class="date-group">
+                    <input type="text" placeholder="DD" id="out-d" disabled>
+                    <input type="text" placeholder="MM" id="out-m" disabled>
+                    <input type="text" placeholder="AAAA" id="out-a" class="year" disabled oninput="checkStep2()">
+                    <button class="cal-btn" id="btn-out" disabled onclick="toggleCal('cal2')">📅</button>
+                    <div id="cal2" class="calendar-dropdown">Diciembre 2026...</div>
+                </div>
+            </div>
+
+            <div class="field-container">
+                <span class="label-fake">Personas</span>
+                <input type="number" id="pax" placeholder="Nº" style="width: 60px;" disabled oninput="checkStep3()">
+            </div>
+
+            <div class="field-container">
+                <span class="label-fake">Habitación</span>
+                <select id="room" disabled onchange="launchSearch()">
+                    <option value="">Selecciona...</option>
+                    <option>Amapola</option>
+                    <option>Lavanda</option>
+                    <option>Margarita</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="loading-area" style="display: none; margin-top: 30px;">
+            <p class="blink">Buscando...</p>
         </div>
     </main>
+
     <script>
-        function enableNext(id) { document.getElementById(id).disabled = false; }
-        function startSearch() { 
-            document.getElementById('loader').style.display = 'block';
-            // Error: El texto "Buscando..." no es anunciado a lectores de pantalla (Falta aria-live)
+        function toggleCal(id) {
+            const el = document.getElementById(id);
+            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Lógica de activación secuencial
+        function checkStep1() {
+            if(document.getElementById('in-a').value.length === 4) {
+                document.getElementById('out-d').disabled = false;
+                document.getElementById('out-m').disabled = false;
+                document.getElementById('out-a').disabled = false;
+                document.getElementById('btn-out').disabled = false;
+            }
+        }
+
+        function checkStep2() {
+            if(document.getElementById('out-a').value.length === 4) {
+                document.getElementById('pax').disabled = false;
+            }
+        }
+
+        function checkStep3() {
+            if(document.getElementById('pax').value > 0) {
+                document.getElementById('room').disabled = false;
+            }
+        }
+
+        function launchSearch() {
+            document.getElementById('loading-area').style.display = 'block';
         }
     </script>
 </body>
