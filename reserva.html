@@ -1,29 +1,28 @@
 <!DOCTYPE html>
-<html lang="it">
-<head>
+<html lang="it"> <head>
     <meta charset="UTF-8">
     <title>Reserva - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Contenedor gris demasiado estrecho (Causa el problema de scroll y visibilidad) */
+        /* Contenedor ampliado según tu petición */
         .booking-row {
             display: flex;
             flex-direction: row;
             align-items: flex-start;
-            gap: 15px;
+            gap: 20px;
             background: #eeeeee;
-            padding: 15px;
+            padding: 20px;
             border-radius: 4px;
-            width: 900px; /* Muy estrecho para el contenido expandido */
-            height: 80px;  /* Altura fija insuficiente: Error de Reflow */
-            overflow-y: auto; 
+            width: 95%;
+            height: 400px; /* Altura suficiente para los desplegables */
             margin: 20px auto;
+            /* overflow-y eliminado */
         }
 
-        .field-container { display: flex; flex-direction: column; min-width: 150px; }
+        .field-container { display: flex; flex-direction: column; position: relative; }
         .label-fake { font-size: 12px; margin-bottom: 4px; color: #555; font-weight: bold; }
 
-        /* Estilos del Calendario Real */
+        /* Calendario */
         .calendar-wrapper {
             position: absolute;
             top: 100%;
@@ -38,29 +37,20 @@
         }
 
         .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .cal-header button { cursor: pointer; border: 1px solid #ccc; background: #f0f0f0; }
-        
-        .cal-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-            text-align: center;
-            font-size: 12px;
-        }
-
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 12px; }
         .cal-day-name { font-weight: bold; background: #ddd; }
         .cal-day { padding: 5px; cursor: pointer; border: 1px solid #eee; }
         .cal-day:hover { background: #00ffd5; }
         .today { background: #ffff00; font-weight: bold; }
 
-        .date-input-group { position: relative; display: flex; gap: 2px; }
+        .date-input-group { display: flex; gap: 2px; }
         .date-input-group input { width: 35px; text-align: center; }
         .btn-cal { cursor: pointer; }
     </style>
 </head>
 <body>
     <header>
-        <img src="logoGrullo.png" id="logo" alt="Logo">
+        <img src="logoGrullo.png" id="logo">
         <nav>
             <ul class="main-menu">
                 <li><a href="index.html">La casa</a></li>
@@ -72,7 +62,6 @@
 
     <main style="padding: 20px;">
         <h1>Reserva tu estancia</h1>
-        <p>Selecciona tus fechas (Nota: Si el calendario se corta, usa el scroll del cuadro gris).</p>
         
         <div class="booking-row">
             <div class="field-container">
@@ -81,51 +70,65 @@
                     <input type="text" id="d-in" placeholder="DD">
                     <input type="text" id="m-in" placeholder="MM">
                     <input type="text" id="a-in" placeholder="AAAA" style="width: 50px;">
-                    <button class="btn-cal" onclick="toggleCalendar('cal-in')">📅</button>
-                    
+                    <button class="btn-cal" onclick="toggleCalendar('cal-in', 'in')">📅</button>
                     <div id="cal-in" class="calendar-wrapper">
                         <div class="cal-header">
-                            <button onclick="changeMonth(-1)"> &lt; </button>
-                            <span id="month-year"></span>
-                            <button onclick="changeMonth(1)"> &gt; </button>
+                            <button onclick="changeMonth(-1, 'in')"> &lt; </button>
+                            <span id="month-year-in"></span>
+                            <button onclick="changeMonth(1, 'in')"> &gt; </button>
                         </div>
-                        <div class="cal-grid" id="days-grid"></div>
+                        <div class="cal-grid" id="days-grid-in"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-container">
+                <span class="label-fake">Salida</span>
+                <div class="date-input-group">
+                    <input type="text" id="d-out" placeholder="DD">
+                    <input type="text" id="m-out" placeholder="MM">
+                    <input type="text" id="a-out" placeholder="AAAA" style="width: 50px;">
+                    <button class="btn-cal" onclick="toggleCalendar('cal-out', 'out')">📅</button>
+                    <div id="cal-out" class="calendar-wrapper">
+                        <div class="cal-header">
+                            <button onclick="changeMonth(-1, 'out')"> &lt; </button>
+                            <span id="month-year-out"></span>
+                            <button onclick="changeMonth(1, 'out')"> &gt; </button>
+                        </div>
+                        <div class="cal-grid" id="days-grid-out"></div>
                     </div>
                 </div>
             </div>
 
             <div class="field-container">
                 <span class="label-fake">Personas</span>
-                <input type="number" placeholder="0" disabled>
-            </div>
-
-            <div class="field-container">
-                <span class="label-fake">Habitación</span>
-                <select disabled><option>Seleccione fechas primero...</option></select>
+                <input type="number" value="1">
             </div>
         </div>
     </main>
 
     <script>
-        let currentDate = new Date();
-        
-        function toggleCalendar(id) {
+        let dateIn = new Date();
+        let dateOut = new Date();
+
+        function toggleCalendar(id, type) {
             const el = document.getElementById(id);
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-            if(el.style.display === 'block') renderCalendar();
+            const isVisible = el.style.display === 'block';
+            document.querySelectorAll('.calendar-wrapper').forEach(c => c.style.display = 'none');
+            if(!isVisible) {
+                el.style.display = 'block';
+                renderCalendar(type);
+            }
         }
 
-        function renderCalendar() {
-            const grid = document.getElementById('days-grid');
-            const label = document.getElementById('month-year');
+        function renderCalendar(type) {
+            const targetDate = type === 'in' ? dateIn : dateOut;
+            const grid = document.getElementById(`days-grid-${type}`);
+            const label = document.getElementById(`month-year-${type}`);
             grid.innerHTML = '';
 
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            
-            label.innerText = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(currentDate);
+            label.innerText = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(targetDate);
 
-            // Nombres de días
             ['L','M','X','J','V','S','D'].forEach(d => {
                 const div = document.createElement('div');
                 div.className = 'cal-day-name';
@@ -133,30 +136,33 @@
                 grid.appendChild(div);
             });
 
+            const year = targetDate.getFullYear();
+            const month = targetDate.getMonth();
             const firstDay = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
             const offset = firstDay === 0 ? 6 : firstDay - 1;
 
             for(let i=0; i<offset; i++) grid.appendChild(document.createElement('div'));
 
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
             for(let d=1; d<=daysInMonth; d++) {
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'cal-day';
                 if(d === new Date().getDate() && month === new Date().getMonth()) dayDiv.className += ' today';
                 dayDiv.innerText = d;
                 dayDiv.onclick = () => {
-                    document.getElementById('d-in').value = d.toString().padStart(2, '0');
-                    document.getElementById('m-in').value = (month + 1).toString().padStart(2, '0');
-                    document.getElementById('a-in').value = year;
-                    document.getElementById('cal-in').style.display = 'none';
+                    document.getElementById(`d-${type}`).value = d.toString().padStart(2, '0');
+                    document.getElementById(`m-${type}`).value = (month + 1).toString().padStart(2, '0');
+                    document.getElementById(`a-${type}`).value = year;
+                    document.getElementById(`cal-${type}`).style.display = 'none';
                 };
                 grid.appendChild(dayDiv);
             }
         }
 
-        function changeMonth(diff) {
-            currentDate.setMonth(currentDate.getMonth() + diff);
-            renderCalendar();
+        function changeMonth(diff, type) {
+            if(type === 'in') dateIn.setMonth(dateIn.getMonth() + diff);
+            else dateOut.setMonth(dateOut.getMonth() + diff);
+            renderCalendar(type);
         }
     </script>
 </body>
