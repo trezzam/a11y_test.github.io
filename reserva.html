@@ -1,170 +1,162 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>Reserva - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Diseño en una única fila */
+        /* Contenedor gris demasiado estrecho (Causa el problema de scroll y visibilidad) */
         .booking-row {
             display: flex;
             flex-direction: row;
-            align-items: flex-end;
-            gap: 10px;
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto; /* Error potencial de Reflow */
+            align-items: flex-start;
+            gap: 15px;
+            background: #eeeeee;
+            padding: 15px;
+            border-radius: 4px;
+            width: 900px; /* Muy estrecho para el contenido expandido */
+            height: 80px;  /* Altura fija insuficiente: Error de Reflow */
+            overflow-y: auto; 
+            margin: 20px auto;
         }
 
-        /* Grupo de fecha (Día/Mes/Año + Botón) */
-        .date-group {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            position: relative;
-        }
+        .field-container { display: flex; flex-direction: column; min-width: 150px; }
+        .label-fake { font-size: 12px; margin-bottom: 4px; color: #555; font-weight: bold; }
 
-        .date-group input {
-            width: 45px;
-            text-align: center;
-        }
-
-        .date-group input.year {
-            width: 65px;
-        }
-
-        .cal-btn {
-            background: none;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            padding: 5px;
-            font-size: 18px;
-        }
-
-        /* Calendario Dropdown falso */
-        .calendar-dropdown {
-            display: none;
+        /* Estilos del Calendario Real */
+        .calendar-wrapper {
             position: absolute;
             top: 100%;
             left: 0;
             background: white;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            z-index: 100;
+            border: 1px solid #999;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+            width: 250px;
             padding: 10px;
-            width: 200px;
         }
 
-        .field-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .label-fake {
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .cal-header button { cursor: pointer; border: 1px solid #ccc; background: #f0f0f0; }
+        
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
             font-size: 12px;
-            margin-bottom: 5px;
-            color: #777;
         }
+
+        .cal-day-name { font-weight: bold; background: #ddd; }
+        .cal-day { padding: 5px; cursor: pointer; border: 1px solid #eee; }
+        .cal-day:hover { background: #00ffd5; }
+        .today { background: #ffff00; font-weight: bold; }
+
+        .date-input-group { position: relative; display: flex; gap: 2px; }
+        .date-input-group input { width: 35px; text-align: center; }
+        .btn-cal { cursor: pointer; }
     </style>
 </head>
 <body>
     <header>
-        <img src="logoGrullo.png" id="logo">
+        <img src="logoGrullo.png" id="logo" alt="Logo">
         <nav>
             <ul class="main-menu">
                 <li><a href="index.html">La casa</a></li>
-                <li class="has-submenu">
-                    <a href="#">Actividades</a>
-                    <ul class="submenu">
-                        <li><a href="mar.html">Mar</a></li>
-                        <li><a href="montana.html">Montaña</a></li>
-                        <li><a href="en-casa.html">En la casa</a></li>
-                    </ul>
-                </li>
                 <li><a href="reserva.html">Reserva</a></li>
                 <li><a href="contacto.html">Contáctanos</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
+    <main style="padding: 20px;">
         <h1>Reserva tu estancia</h1>
+        <p>Selecciona tus fechas (Nota: Si el calendario se corta, usa el scroll del cuadro gris).</p>
         
         <div class="booking-row">
             <div class="field-container">
                 <span class="label-fake">Entrada</span>
-                <div class="date-group">
-                    <input type="text" placeholder="DD" id="in-d">
-                    <input type="text" placeholder="MM" id="in-m">
-                    <input type="text" placeholder="AAAA" id="in-a" class="year" oninput="checkStep1()">
-                    <button class="cal-btn" onclick="toggleCal('cal1')">📅</button>
-                    <div id="cal1" class="calendar-dropdown">Diciembre 2026...</div>
-                </div>
-            </div>
-
-            <div class="field-container">
-                <span class="label-fake">Salida</span>
-                <div class="date-group">
-                    <input type="text" placeholder="DD" id="out-d" disabled>
-                    <input type="text" placeholder="MM" id="out-m" disabled>
-                    <input type="text" placeholder="AAAA" id="out-a" class="year" disabled oninput="checkStep2()">
-                    <button class="cal-btn" id="btn-out" disabled onclick="toggleCal('cal2')">📅</button>
-                    <div id="cal2" class="calendar-dropdown">Diciembre 2026...</div>
+                <div class="date-input-group">
+                    <input type="text" id="d-in" placeholder="DD">
+                    <input type="text" id="m-in" placeholder="MM">
+                    <input type="text" id="a-in" placeholder="AAAA" style="width: 50px;">
+                    <button class="btn-cal" onclick="toggleCalendar('cal-in')">📅</button>
+                    
+                    <div id="cal-in" class="calendar-wrapper">
+                        <div class="cal-header">
+                            <button onclick="changeMonth(-1)"> &lt; </button>
+                            <span id="month-year"></span>
+                            <button onclick="changeMonth(1)"> &gt; </button>
+                        </div>
+                        <div class="cal-grid" id="days-grid"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="field-container">
                 <span class="label-fake">Personas</span>
-                <input type="number" id="pax" placeholder="Nº" style="width: 60px;" disabled oninput="checkStep3()">
+                <input type="number" placeholder="0" disabled>
             </div>
 
             <div class="field-container">
                 <span class="label-fake">Habitación</span>
-                <select id="room" disabled onchange="launchSearch()">
-                    <option value="">Selecciona...</option>
-                    <option>Amapola</option>
-                    <option>Lavanda</option>
-                    <option>Margarita</option>
-                </select>
+                <select disabled><option>Seleccione fechas primero...</option></select>
             </div>
-        </div>
-
-        <div id="loading-area" style="display: none; margin-top: 30px;">
-            <p class="blink">Buscando...</p>
         </div>
     </main>
 
     <script>
-        function toggleCal(id) {
+        let currentDate = new Date();
+        
+        function toggleCalendar(id) {
             const el = document.getElementById(id);
-            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            if(el.style.display === 'block') renderCalendar();
         }
 
-        // Lógica de activación secuencial
-        function checkStep1() {
-            if(document.getElementById('in-a').value.length === 4) {
-                document.getElementById('out-d').disabled = false;
-                document.getElementById('out-m').disabled = false;
-                document.getElementById('out-a').disabled = false;
-                document.getElementById('btn-out').disabled = false;
+        function renderCalendar() {
+            const grid = document.getElementById('days-grid');
+            const label = document.getElementById('month-year');
+            grid.innerHTML = '';
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            label.innerText = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(currentDate);
+
+            // Nombres de días
+            ['L','M','X','J','V','S','D'].forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'cal-day-name';
+                div.innerText = d;
+                grid.appendChild(div);
+            });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const offset = firstDay === 0 ? 6 : firstDay - 1;
+
+            for(let i=0; i<offset; i++) grid.appendChild(document.createElement('div'));
+
+            for(let d=1; d<=daysInMonth; d++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'cal-day';
+                if(d === new Date().getDate() && month === new Date().getMonth()) dayDiv.className += ' today';
+                dayDiv.innerText = d;
+                dayDiv.onclick = () => {
+                    document.getElementById('d-in').value = d.toString().padStart(2, '0');
+                    document.getElementById('m-in').value = (month + 1).toString().padStart(2, '0');
+                    document.getElementById('a-in').value = year;
+                    document.getElementById('cal-in').style.display = 'none';
+                };
+                grid.appendChild(dayDiv);
             }
         }
 
-        function checkStep2() {
-            if(document.getElementById('out-a').value.length === 4) {
-                document.getElementById('pax').disabled = false;
-            }
-        }
-
-        function checkStep3() {
-            if(document.getElementById('pax').value > 0) {
-                document.getElementById('room').disabled = false;
-            }
-        }
-
-        function launchSearch() {
-            document.getElementById('loading-area').style.display = 'block';
+        function changeMonth(diff) {
+            currentDate.setMonth(currentDate.getMonth() + diff);
+            renderCalendar();
         }
     </script>
 </body>
