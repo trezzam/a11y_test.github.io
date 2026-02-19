@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="it"> <head>
+<html lang="it">
+<head>
     <meta charset="UTF-8">
     <title>Reserva - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
     <style>
         body { margin: 0; padding: 0; font-family: sans-serif; }
         
-        /* Contenedor de 400px de alto sin overflow-y */
         .booking-row {
             display: flex;
             flex-direction: row;
@@ -14,7 +14,6 @@
             gap: 20px;
             background: #eeeeee;
             padding: 20px;
-            border-radius: 4px;
             width: 95%;
             height: 400px; 
             margin: 20px auto;
@@ -23,50 +22,55 @@
         .field-container { display: flex; flex-direction: column; position: relative; }
         .label-fake { font-size: 12px; margin-bottom: 4px; color: #555; font-weight: bold; }
 
-        /* Estilos del Calendario */
+        /* Calendario */
         .calendar-wrapper {
             position: absolute;
             top: 100%;
             left: 0;
             background: white;
             border: 1px solid #999;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             z-index: 1000;
             display: none;
             width: 250px;
             padding: 10px;
         }
 
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 11px; }
-        .cal-day-name { font-weight: bold; background: #ddd; padding: 2px; }
         .cal-day { padding: 5px; cursor: pointer; border: 1px solid #eee; }
         .cal-day:hover { background: #00ffd5; }
-        .today { background: #ffff00; font-weight: bold; }
 
-        .date-input-group { display: flex; gap: 2px; }
-        .date-input-group input { width: 35px; text-align: center; border: 1px solid #ccc; padding: 4px; }
-        .btn-cal { cursor: pointer; background: #fff; border: 1px solid #ccc; }
-
-        /* Estilo para el select de habitación */
-        .room-select { padding: 5px; border: 1px solid #ccc; width: 180px; }
-
-        /* Menú con Actividades como no-link */
+        /* MENÚ SIN BACKGROUND (Fallo de contraste al desplegar) */
         nav ul { list-style: none; display: flex; gap: 20px; padding: 15px; margin: 0; }
-        nav ul li a { color: white; text-decoration: none; }
-        .no-link { color: #aaa; cursor: default; }
+        nav ul li a { color: #333; text-decoration: none; }
+        .no-link { color: #666; cursor: default; }
         .submenu { display: none; position: absolute; padding: 10px; flex-direction: column; }
         li:hover .submenu { display: flex; }
+
+        /* Animación de parpadeo para "Buscando..." */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .buscando {
+            display: none;
+            color: red;
+            font-weight: bold;
+            animation: blink 0.8s infinite;
+            margin-top: 10px;
+        }
+
+        /* Estilo para campos deshabilitados visualmente */
+        input:disabled, select:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
 <body>
     <header>
-        <img src="logoGrullo.png" id="logo">
         <nav>
             <ul class="main-menu">
                 <li><a href="index.html">La casa</a></li>
                 <li class="has-submenu">
-                    <a href="#">Actividades</a>
+                    <span class="no-link">Actividades</span>
                     <ul class="submenu">
                         <li><a href="mar.html">Mar</a></li>
                         <li><a href="montana.html">Montaña</a></li>
@@ -86,16 +90,12 @@
             <div class="field-container">
                 <span class="label-fake">Entrada</span>
                 <div class="date-input-group">
-                    <input type="text" id="d-in" placeholder="DD">
-                    <input type="text" id="m-in" placeholder="MM">
-                    <input type="text" id="a-in" placeholder="AAAA" style="width: 50px;">
+                    <input type="text" id="d-in" placeholder="DD" readonly>
+                    <input type="text" id="m-in" placeholder="MM" readonly>
+                    <input type="text" id="a-in" placeholder="AAAA" style="width: 50px;" readonly>
                     <button class="btn-cal" onclick="toggleCalendar('cal-in', 'in')">📅</button>
                     <div id="cal-in" class="calendar-wrapper">
-                        <div class="cal-header">
-                            <button onclick="changeMonth(-1, 'in')"> &lt; </button>
-                            <span id="month-year-in"></span>
-                            <button onclick="changeMonth(1, 'in')"> &gt; </button>
-                        </div>
+                        <div class="cal-header"><button onclick="changeMonth(-1, 'in')"><</button> <span id="month-year-in"></span> <button onclick="changeMonth(1, 'in')">></button></div>
                         <div class="cal-grid" id="days-grid-in"></div>
                     </div>
                 </div>
@@ -104,34 +104,31 @@
             <div class="field-container">
                 <span class="label-fake">Salida</span>
                 <div class="date-input-group">
-                    <input type="text" id="d-out" placeholder="DD">
-                    <input type="text" id="m-out" placeholder="MM">
-                    <input type="text" id="a-out" placeholder="AAAA" style="width: 50px;">
-                    <button class="btn-cal" onclick="toggleCalendar('cal-out', 'out')">📅</button>
+                    <input type="text" id="d-out" placeholder="DD" readonly>
+                    <input type="text" id="m-out" placeholder="MM" readonly>
+                    <input type="text" id="a-out" placeholder="AAAA" style="width: 50px;" readonly>
+                    <button class="btn-cal" id="btn-out" onclick="toggleCalendar('cal-out', 'out')" disabled>📅</button>
                     <div id="cal-out" class="calendar-wrapper">
-                        <div class="cal-header">
-                            <button onclick="changeMonth(-1, 'out')"> &lt; </button>
-                            <span id="month-year-out"></span>
-                            <button onclick="changeMonth(1, 'out')"> &gt; </button>
-                        </div>
+                        <div class="cal-header"><button onclick="changeMonth(-1, 'out')"><</button> <span id="month-year-out"></span> <button onclick="changeMonth(1, 'out')">></button></div>
                         <div class="cal-grid" id="days-grid-out"></div>
                     </div>
                 </div>
             </div>
 
             <div class="field-container">
-                <span class="label-fake">Habitación</span>
-                <select class="room-select">
-                    <option value="">Seleccione habitación...</option>
-                    <option value="amapola">Amapola (Doble)</option>
-                    <option value="lavanda">Lavanda (Suite)</option>
-                    <option value="margarita">Margarita (Familiar)</option>
-                </select>
+                <span class="label-fake">Personas</span>
+                <input type="number" id="num-pers" value="1" style="width: 50px;" disabled onchange="checkNext('num-pers', 'room-select')">
             </div>
 
             <div class="field-container">
-                <span class="label-fake">Personas</span>
-                <input type="number" value="1" style="width: 50px; padding: 4px;">
+                <span class="label-fake">Habitación</span>
+                <select id="room-select" class="room-select" disabled onchange="showBuscando()">
+                    <option value="">Seleccione...</option>
+                    <option value="amapola">Amapola</option>
+                    <option value="lavanda">Lavanda</option>
+                    <option value="margarita">Margarita</option>
+                </select>
+                <div id="msg-buscando" class="buscando">Buscando...</div>
             </div>
         </div>
     </main>
@@ -142,12 +139,10 @@
 
         function toggleCalendar(id, type) {
             const el = document.getElementById(id);
-            const isVisible = el.style.display === 'block';
+            if (el.style.display === 'block') { el.style.display = 'none'; return; }
             document.querySelectorAll('.calendar-wrapper').forEach(c => c.style.display = 'none');
-            if(!isVisible) {
-                el.style.display = 'block';
-                renderCalendar(type);
-            }
+            el.style.display = 'block';
+            renderCalendar(type);
         }
 
         function renderCalendar(type) {
@@ -155,37 +150,38 @@
             const grid = document.getElementById(`days-grid-${type}`);
             const label = document.getElementById(`month-year-${type}`);
             grid.innerHTML = '';
-
             label.innerText = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(targetDate);
-
-            ['L','M','X','J','V','S','D'].forEach(d => {
-                const div = document.createElement('div');
-                div.className = 'cal-day-name';
-                div.innerText = d;
-                grid.appendChild(div);
-            });
-
+            
             const year = targetDate.getFullYear();
             const month = targetDate.getMonth();
-            const firstDay = new Date(year, month, 1).getDay();
-            const offset = firstDay === 0 ? 6 : firstDay - 1;
-
-            for(let i=0; i<offset; i++) grid.appendChild(document.createElement('div'));
-
             const daysInMonth = new Date(year, month + 1, 0).getDate();
+
             for(let d=1; d<=daysInMonth; d++) {
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'cal-day';
-                if(d === new Date().getDate() && month === new Date().getMonth()) dayDiv.className += ' today';
                 dayDiv.innerText = d;
                 dayDiv.onclick = () => {
                     document.getElementById(`d-${type}`).value = d.toString().padStart(2, '0');
                     document.getElementById(`m-${type}`).value = (month + 1).toString().padStart(2, '0');
                     document.getElementById(`a-${type}`).value = year;
                     document.getElementById(`cal-${type}`).style.display = 'none';
+                    
+                    // Lógica de desbloqueo secuencial
+                    if(type === 'in') document.getElementById('btn-out').disabled = false;
+                    if(type === 'out') document.getElementById('num-pers').disabled = false;
                 };
                 grid.appendChild(dayDiv);
             }
+        }
+
+        function checkNext(currentId, nextId) {
+            if(document.getElementById(currentId).value !== "") {
+                document.getElementById(nextId).disabled = false;
+            }
+        }
+
+        function showBuscando() {
+            document.getElementById('msg-buscando').style.display = 'block';
         }
 
         function changeMonth(diff, type) {
