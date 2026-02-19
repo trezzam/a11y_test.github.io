@@ -4,7 +4,9 @@
     <title>Reserva - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Contenedor ampliado según tu petición */
+        body { margin: 0; padding: 0; font-family: sans-serif; }
+        
+        /* Contenedor de 400px de alto sin overflow-y */
         .booking-row {
             display: flex;
             flex-direction: row;
@@ -14,15 +16,14 @@
             padding: 20px;
             border-radius: 4px;
             width: 95%;
-            height: 400px; /* Altura suficiente para los desplegables */
+            height: 400px; 
             margin: 20px auto;
-            /* overflow-y eliminado */
         }
 
         .field-container { display: flex; flex-direction: column; position: relative; }
         .label-fake { font-size: 12px; margin-bottom: 4px; color: #555; font-weight: bold; }
 
-        /* Calendario */
+        /* Estilos del Calendario */
         .calendar-wrapper {
             position: absolute;
             top: 100%;
@@ -37,23 +38,40 @@
         }
 
         .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 12px; }
-        .cal-day-name { font-weight: bold; background: #ddd; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 11px; }
+        .cal-day-name { font-weight: bold; background: #ddd; padding: 2px; }
         .cal-day { padding: 5px; cursor: pointer; border: 1px solid #eee; }
         .cal-day:hover { background: #00ffd5; }
         .today { background: #ffff00; font-weight: bold; }
 
         .date-input-group { display: flex; gap: 2px; }
-        .date-input-group input { width: 35px; text-align: center; }
-        .btn-cal { cursor: pointer; }
+        .date-input-group input { width: 35px; text-align: center; border: 1px solid #ccc; padding: 4px; }
+        .btn-cal { cursor: pointer; background: #fff; border: 1px solid #ccc; }
+
+        /* Estilo para el select de habitación */
+        .room-select { padding: 5px; border: 1px solid #ccc; width: 180px; }
+
+        /* Menú con Actividades como no-link */
+        nav ul { list-style: none; display: flex; gap: 20px; background: #333; padding: 15px; margin: 0; }
+        nav ul li a { color: white; text-decoration: none; }
+        .no-link { color: #aaa; cursor: default; }
+        .submenu { display: none; position: absolute; background: #444; padding: 10px; flex-direction: column; }
+        li:hover .submenu { display: flex; }
     </style>
 </head>
 <body>
     <header>
-        <img src="logoGrullo.png" id="logo">
         <nav>
             <ul class="main-menu">
                 <li><a href="index.html">La casa</a></li>
+                <li class="has-submenu">
+                    <span class="no-link">Actividades</span>
+                    <ul class="submenu">
+                        <li><a href="mar.html">Mar</a></li>
+                        <li><a href="montana.html">Montaña</a></li>
+                        <li><a href="en-casa.html">En la casa</a></li>
+                    </ul>
+                </li>
                 <li><a href="reserva.html">Reserva</a></li>
                 <li><a href="contacto.html">Contáctanos</a></li>
             </ul>
@@ -101,8 +119,18 @@
             </div>
 
             <div class="field-container">
+                <span class="label-fake">Habitación</span>
+                <select class="room-select">
+                    <option value="">Seleccione habitación...</option>
+                    <option value="amapola">Amapola (Doble)</option>
+                    <option value="lavanda">Lavanda (Suite)</option>
+                    <option value="margarita">Margarita (Familiar)</option>
+                </select>
+            </div>
+
+            <div class="field-container">
                 <span class="label-fake">Personas</span>
-                <input type="number" value="1">
+                <input type="number" value="1" style="width: 50px; padding: 4px;">
             </div>
         </div>
     </main>
