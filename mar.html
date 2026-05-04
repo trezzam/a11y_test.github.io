@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Actividades: Mar - Casa Rural</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <img src="logoGrullo.png" id="logo">
@@ -27,13 +29,173 @@
 
     <main>
         <h3>Excursiones a la Costa</h3>
-        <p style="color: #999;">Aunque Teruel no tiene mar, ofrecemos traslados exclusivos a las playas de Castellón.</p>
-        
+        <p style="color: #999;">Aunque Teruel no tiene mar, ofrecemos traslados exclusivos a las playas de Castellón.
+        </p>
+
+
+
+        <style>
+            /* Contenedor que rompe el Reflow */
+            .gallery-no-reflow {
+                display: flex;
+                /* Alinea las imágenes en fila */
+                flex-direction: row;
+                flex-wrap: nowrap;
+                /* CRÍTICO: Impide que las imágenes bajen (no hay wrap) */
+                width: fit-content;
+                /* Obliga al contenedor a estirarse horizontalmente */
+                border: 3px solid red;
+                padding: 10px;
+            }
+
+            .gallery-no-reflow img {
+                display: block;
+                /* Usamos px fijos para asegurar que crezcan con el zoom 
+           y fuercen el scroll horizontal */
+                width: 600px;
+                height: auto;
+            }
+        </style>
+
+        <div class="gallery-no-reflow">
+            <img src="Playa1.jpg" alt="Playa soleada">
+            <img src="paellaTeruel.jpg" alt="Paella de Teruel">
+        </div>
+
+        <!-- las siguientes imagenes NO rompen el criterio 1.4.10, ya que  hacen reflow -->
         <div class="gallery">
             <img src="Playa1.jpg" heigth="300">
             <img src="paellaTeruel.jpg" heigth="300">
         </div>
-        
-        <a href="reserva.html" style="color: #eee;">Reserva tu transporte aquí</a> </main>
+
+        <a href="reserva.html" style="color: #eee;">Reserva tu transporte aquí</a>
+
+        <!-- CONTENEDOR PARA FALLO 1.4.4 -->
+        <div style="
+    width: 100%; 
+    height: 2.8em; 
+    border: 2px solid red; 
+    overflow: hidden; 
+    word-wrap: break-word; 
+    overflow-wrap: break-word;
+    margin-bottom: 20px;
+    background-color: #fff0f0;
+    line-height: 1.2;">
+            <p style="font-size: 16px; margin: 0; padding: 2px;">
+                Este texto es una prueba de escalado. Al 100% de zoom cabe perfectamente en una sola línea,
+                pero si aumentas el zoom al 200%, el tamaño de la fuente obligará al texto a ocupar
+                varias líneas y, debido a la altura fija del contenedor, el resto del mensaje
+                desaparecerá de la vista del usuario.
+            </p>
+        </div>
+
+        <!-- CONTENEDOR PARA FALLO 1.4.12 -->
+        <div style="border: 2px solid orange; padding: 10px;margin-bottom: 20px;">
+            <p style="
+        font-size: 16px !important;
+        line-height: 1 !important; 
+        letter-spacing: normal !important; 
+        word-spacing: normal !important;
+        margin-bottom: 0px !important;
+        background: #fff3e0;">
+                Este párrafo incumple el SC 1.4.12. Aunque intentes aplicar mediante
+                estilos de usuario un interlineado de 1.5 o un espaciado de letras de 0.12,
+                el uso de "!important" en el código base bloquea cualquier cambio,
+                haciendo que el texto se mantenga rígido y potencialmente ilegible.
+            </p>
+        </div>
+
+        <div style="overflow: hidden; border: 2px solid red; width: 300px; background: #eee;">
+            <p style="margin: 5px; font-weight: bold; color: red;">❌ INCUMPLE SC 2.2.2</p>
+            <div style="display: flex; width: 600px; animation: slide 5s linear infinite;">
+                <img src="Playa1.jpg" style="width: 150px; height: auto;" alt="Playa">
+                <img src="paellaTeruel.jpg" style="width: 150px; height: auto;" alt="Paella">
+                <img src="Playa1.jpg" style="width: 150px; height: auto;" alt="Playa">
+                <img src="paellaTeruel.jpg" style="width: 150px; height: auto;" alt="Paella">
+            </div>
+        </div>
+
+        <style>
+            @keyframes slide {
+                0% {
+                    transform: translateX(0);
+                }
+
+                100% {
+                    transform: translateX(-300px);
+                }
+            }
+        </style>
+
+
+        <div style="overflow: hidden; border: 2px solid green; width: 300px; background: #eee; margin-top: 20px;">
+            <p style="margin: 5px; font-weight: bold; color: green;">✅ CUMPLE SC 2.2.2</p>
+
+            <div id="carruselCumple" style="display: flex; width: 600px; animation: slide 10s linear infinite;">
+                <img src="Playa1.jpg" style="width: 150px; height: auto;" alt="Playa">
+                <img src="paellaTeruel.jpg" style="width: 150px; height: auto;" alt="Paella">
+                <img src="Playa1.jpg" style="width: 150px; height: auto;" alt="Playa">
+                <img src="paellaTeruel.jpg" style="width: 150px; height: auto;" alt="Paella">
+            </div>
+
+            <button id="btnPausa" style="margin: 10px; padding: 5px 10px; cursor: pointer;">
+                Pausar Movimiento
+            </button>
+        </div>
+
+        <script>
+            const carrusel = document.getElementById('carruselCumple');
+            const btn = document.getElementById('btnPausa');
+            let moviendo = true;
+
+            btn.addEventListener('click', () => {
+                if (moviendo) {
+                    carrusel.style.animationPlayState = 'paused';
+                    btn.textContent = 'Reactivar Movimiento';
+                } else {
+                    carrusel.style.animationPlayState = 'running';
+                    btn.textContent = 'Pausar Movimiento';
+                }
+                moviendo = !moviendo;
+            });
+        </script>
+
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>SC / ID</th>
+                    <th>Criterio de Éxito / Requisito</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- CAPÍTULO 9 - REQUISITOS WEB (WCAG 2.1) -->
+                <tr>
+                    <td>9.1.4.4</td>
+                    <td>Escalado de texto</td>
+                    <td>El texto desaparece haciendo zoom en la página.</td>
+                </tr>
+                <tr>
+                    <td>9.1.4.12</td>
+                    <td>Espaciado de texto</td>
+                    <td>el código base bloquea cualquier cambio,
+                        haciendo que el texto se mantenga rígido y potencialmente ilegible</td>
+                </tr>
+                <tr>
+                    <td>9.1.4.10</td>
+                    <td>Reflow</td>
+                    <td>imagenes que rompen el criterio 1.4.10, ya que NO hacen reflow</td>
+                </tr>
+                <tr>
+                    <td>9.2.2.2</td>
+                    <td>Pause, Stop, Hide</td>
+                    <td>Carrusel infinito sin pausa</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </main>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Contacto - Casa Rural El Grullo</title>
@@ -9,21 +10,26 @@
         .error-border {
             border: 2px solid red !important;
         }
+
         .error-text {
             color: red;
             font-size: 13px;
             margin-top: 5px;
-            display: none; /* Se activa por JS */
+            display: none;
+            /* Se activa por JS */
         }
+
         .form-container {
             max-width: 500px;
             margin-top: 30px;
         }
+
         .field-group {
             margin-bottom: 20px;
         }
     </style>
 </head>
+
 <body>
     <header>
         <img src="logoGrullo.png" id="logo">
@@ -45,17 +51,26 @@
     </header>
 
     <main>
-        <h1>Contáctanos</h1>
+        <h1>Por cualquier cosa...estamos aquí</h1>
         <p>Si tienes alguna duda sobre nuestra casa en Teruel, escríbenos.</p>
 
         <div class="form-container">
             <div class="field-group">
-                <input type="text" id="nombre" placeholder="Nombre completo" style="width: 100%;">
+                <input type="text" id="nombre_del_usuario" placeholder="Nombre completo" style="width: 100%;">
             </div>
 
             <div class="field-group">
-                <input type="email" id="email" placeholder="Correo electrónico" style="width: 100%;">
+                <input type="email" id="correito"
+                    placeholder="Correo electrónico (es personal, NOK a que no tenga autocompletado)"
+                    style="width: 100%;">
                 <div id="error-msg-email" class="error-text">Este campo es obligatorio</div>
+            </div>
+
+            <div class="field-group">
+                <input type="text" id="direccion_entrega"
+                    placeholder="Donde lo mandamos (no es personal, ok a que no tenga autocompletado)"
+                    style="width: 100%;">
+                <div id="error-msg-direccion_entrega" class="error-text">Este campo es obligatorio </div>
             </div>
 
             <div class="field-group">
@@ -64,7 +79,130 @@
 
             <div class="div-button" onclick="validarContacto()">Enviar Mensaje</div>
         </div>
+
+
+        <!-- Test de Accesibilidad SC 9.1.4.2 / WCAG 1.4.2 -->
+        <section style="padding: 15px; border: 1px solid #000; margin: 10px 0;">
+            <h4>Audio Test: Autoplay 6 Segundos</h4>
+
+            <!-- El atributo 'autoplay' inicia el audio al cargar. 
+         Se omite 'controls' para testear si el desarrollador crea un botón propio -->
+            <audio id="audioTest" src="test3secs.mp3" autoplay></audio>
+
+            <div class="controls">
+                <p>El audio se ha iniciado automáticamente (Duración: 6s).</p>
+
+                Este es un botón sin función con atajo
+                <button id="btnAtajo" aria-label="Prueba de autocompletado" accesskey="M"
+                    onclick="alert('pulsado (Alt+m)')">
+                    Pulsame (Atajo: Alt + M)
+                </button>
+
+                <button id="btnAtajo2" onclick="alert('pulsado (n)')">
+                    Púlsame (Atajo: n)
+                </button>
+
+                <script>
+                    document.addEventListener('keydown', function (e) {
+                        // Si pulsas Alt + M (independientemente del navegador)
+                        if (e.key.toLowerCase() === 'n') {
+                            e.preventDefault(); // Evita conflictos con menús del navegador
+                            document.getElementById('btnAtajo2').click();
+                        }
+                    });
+                </script>
+            </div>
+        </section>
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>SC / ID</th>
+                    <th>Criterio de Éxito / Requisito</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- CAPÍTULO 9 - REQUISITOS WEB (WCAG 2.1) -->
+                <tr>
+                    <td>9.1.4.2</td>
+                    <td>Audio Control</td>
+                    <td>Proporcionar un mecanismo para pausar, detener o silenciar el audio que se reproduce
+                        automáticamente.
+                        (se han puesto dos sonidos en la página, uno de 6 segundos y otro de 3 segundos, y se ha creado
+                        un botón para controlar el audio
+                        controlado por una variable JS) </td>
+                </tr>
+                <tr>
+                    <td>9.1.3.5</td>
+                    <td>Autocompletado</td>
+                    <td>Se han puesto datos personales y no personales en los campos de formulario para facilitar el
+                        autocompletado.</td>
+                </tr>
+                <tr>
+                    <td>9.2.4.6</td>
+                    <td>Encabezados y etiquetas</td>
+                    <td>Solo hay placeholders, y poco claros. Encabezado poco claro y con salto h1-->h4</td>
+                </tr>
+                <tr>
+                    <td>9.3.3.2</td>
+                    <td>Etiquetas e instrucciones</td>
+                    <td>Solo hay placeholders, y poco claros.</td>
+                </tr>
+                <tr>
+                    <td>9.2.1.4</td>
+                    <td>Atajos de teclado</td>
+                    <td>Se ha creado un botón con un atajo de teclado (Alt + M con accesskey y N con JS) para probar la
+                        accesibilidad.</td>
+                </tr>
+            </tbody>
+        </table>
+
+
     </main>
+
+    <script>
+        const audio = document.getElementById('audioTest');
+        const controls = document.querySelector('.controls');
+        let btnMute = document.getElementById('btnMute');
+
+        function detenerAudio() {
+            if (!audio || audio.paused) {
+                return;
+            }
+
+            audio.pause();
+            audio.currentTime = 0; // Reinicia el audio
+
+            if (btnMute) {
+                btnMute.textContent = "Audio Detenido";
+            }
+
+            console.log("Mecanismo de control activado: Audio detenido por el usuario.");
+        }
+        let crea_boton = false; // Cambia a false para probar sin crear el botón
+
+        if (!btnMute && controls && crea_boton) {
+            btnMute = document.createElement('button');
+            btnMute.id = 'btnMute';
+            btnMute.type = 'button';
+            btnMute.setAttribute('aria-label', 'Silenciar audio de fondo');
+            btnMute.textContent = 'Silenciar / Detener Audio';
+            controls.appendChild(btnMute);
+        }
+
+        window.addEventListener('load', () => {
+            audio?.play().catch(() => {
+                // El navegador bloqueó el autoplay; se requiere interacción del usuario
+                alert("El audio no se ha podido reproducir automáticamente. Por favor, cambia las opciones de usuario para activarlo.");
+            });
+        });
+
+        btnMute?.addEventListener('click', detenerAudio);
+
+        // Nota técnica: Los navegadores modernos bloquean el autoplay 
+        // a menos que haya habido una interacción previa o el audio esté muteado de origen.
+    </script>
 
     <script>
         function validarContacto() {
@@ -96,4 +234,5 @@
         }
     </script>
 </body>
+
 </html>
