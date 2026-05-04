@@ -27,6 +27,31 @@
         </nav>
     </header>
 
+
+    <section style="padding: 20px; border: 2px solid #555; background-color: #fff;">
+        <h2>Buscador de páginas web</h2>
+
+        <div class="search-container" style="display: flex; flex-direction: column; gap: 10px;">
+            <label for="search-input">Término de búsqueda:</label>
+
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="search-input" name="search" placeholder="¿Qué buscas?">
+
+                <!-- ERROR 2.5.3: El aria-label NO incluye el texto visible "Buscar" -->
+                <!-- ERROR 4.1.2: Se usa un DIV en lugar de un BUTTON o INPUT TYPE=SUBMIT -->
+                <div id="fake-button" role="button" aria-label="Ejecutar consulta" onclick="alert('Buscando...')"
+                    style="padding: 10px; background: #007bb5; color: white; cursor: pointer; border-radius: 4px;">
+                    Buscar
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // El "botón" no es un botón real, así que no se puede tabular ni activar con Enter 
+        // a menos que se añada tabindex y listeners de teclado (que no he puesto a propósito).
+    </script>
+
     <main>
         <h3>Excursiones a la Costa</h3>
         <p style="color: #999;">Aunque Teruel no tiene mar, ofrecemos traslados exclusivos a las playas de Castellón.
@@ -192,10 +217,35 @@
                     <td>Pause, Stop, Hide</td>
                     <td>Carrusel infinito sin pausa</td>
                 </tr>
+                <tr>
+                    <td>9.2.4.5</td>
+                    <td>Multiple Ways</td>
+                    <td>Carrusel infinito sin pausa</td>
+                </tr>
             </tbody>
         </table>
 
     </main>
+
+    <footer style="border-top: 1px solid #ccc; margin-top: 30px; padding: 20px;">
+        <h2 style="margin-top: 0;">Encuentra esta página de varias formas</h2>
+
+        <p><strong>Ruta actual:</strong> Inicio &gt; Actividades &gt; Mar</p>
+
+        <nav aria-label="Accesos rápidos del sitio">
+            <h3>Accesos rápidos</h3>
+            <ul>
+                <li><a href="index.html">La casa</a></li>
+                <li><a href="mar.html" aria-current="page">Mar (página actual)</a></li>
+                <li><a href="montana.html">Montaña</a></li>
+                <li><a href="en-casa.html">En la casa</a></li>
+                <li><a href="reserva.html">Reserva</a></li>
+                <li><a href="contacto.html">Contáctanos</a></li>
+            </ul>
+        </nav>
+
+
+    </footer>
 </body>
 
 </html>
