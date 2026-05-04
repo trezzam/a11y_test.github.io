@@ -66,8 +66,11 @@
             <button onclick="limpiarMensaje()">
                 Limpiar
             </button>
+
         </div>
     </section>
+
+
 
     <script>
         const container = document.getElementById('status-container');
@@ -80,6 +83,18 @@
 
         function limpiarMensaje() {
             container.innerHTML = '<em>Esperando acción...</em>';
+        }
+
+        async function bloquearOrientacion() {
+            try {
+                // Primero hay que entrar en pantalla completa
+                await document.documentElement.requestFullscreen();
+                // Luego bloqueamos a vertical (o 'landscape')
+                await screen.orientation.lock('portrait');
+                console.log("Orientación bloqueada");
+            } catch (error) {
+                console.error("Error al bloquear:", error);
+            }
         }
     </script>
 </body>
