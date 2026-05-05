@@ -7,7 +7,8 @@ body {
     padding: 0;
     line-height: 1.6;
     background-color: #ffffff;
-    color: #555; /* Contraste moderado, pero revisable */
+    color: #555;
+    /* Contraste moderado, pero revisable */
 }
 
 /* ERROR DE ACCESIBILIDAD: Eliminamos el anillo de enfoque (focus outline) 
@@ -16,13 +17,20 @@ body {
     outline: none !important;
 }
 
+/* El selector debe ser más específico o usar !important para ganar al global */
+body.page-with-focus :focus-visible {
+    outline: 3px solid #005aee !important;
+    outline-offset: 2px !important;
+}
+
 /* ==========================================================================
    HEADER: LOGO + MENÚ (Alineación superior izquierda)
    ========================================================================== */
 header {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Alineado a la izquierda */
+    justify-content: flex-start;
+    /* Alineado a la izquierda */
     padding: 10px 40px;
     background-color: #fff;
     border-bottom: 1px solid #eee;
@@ -30,9 +38,11 @@ header {
 }
 
 img#logo {
-    width: 80px; /* Tamaño solicitado */
+    width: 80px;
+    /* Tamaño solicitado */
     height: auto;
-    margin-right: 50px; /* Separación del menú */
+    margin-right: 50px;
+    /* Separación del menú */
 }
 
 /* MENÚ PRINCIPAL */
@@ -54,7 +64,7 @@ img#logo {
     text-transform: uppercase;
     font-size: 14px;
     /* ERROR: Color gris muy claro sobre blanco. Falla SC 1.4.3 (Contraste) */
-    color: #949494; 
+    color: #949494;
     transition: color 0.3s;
 }
 
@@ -66,12 +76,12 @@ img#logo {
 /* ERROR: Solo se activa con :hover. Un usuario de teclado jamás podrá 
    desplegar estas opciones. Falla SC 2.1.1 (Teclado) */
 .submenu {
-    display: none; 
+    display: none;
     position: absolute;
     top: 100%;
     left: 0;
     background-color: #fff;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     list-style: none;
     padding: 15px 0;
     min-width: 160px;
@@ -102,31 +112,37 @@ main {
     margin: 0 auto;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     color: #2c3e50;
     font-weight: 300;
 }
 
 /* ERROR: Texto descriptivo con poquísimo contraste */
 .hero p {
-    color: #d1d1d1; 
+    color: #d1d1d1;
     font-size: 1.2rem;
 }
+
 .fila-maquetacion {
-   border: 1px solid grey;
+    border: 1px solid grey;
 }
 
 /* ==========================================================================
    FORMULARIOS (RESERVA Y CONTACTO)
    ========================================================================== */
-form, #booking-form {
+form,
+#booking-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
     max-width: 400px;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -134,7 +150,8 @@ input, select, textarea {
 }
 
 /* Estilo para los campos desactivados */
-input:disabled, select:disabled {
+input:disabled,
+select:disabled {
     background-color: #f2f2f2;
     cursor: not-allowed;
 }
@@ -170,7 +187,9 @@ input:disabled, select:disabled {
 }
 
 @keyframes blinker {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 
 /* ==========================================================================

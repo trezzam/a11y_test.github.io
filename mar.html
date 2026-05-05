@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="page-with-focus">
     <header>
         <img src="logoGrullo.png" id="logo">
         <nav>
@@ -40,9 +40,19 @@
                 <!-- ERROR 2.5.3: El aria-label NO incluye el texto visible "Buscar" -->
                 <!-- ERROR 4.1.2: Se usa un DIV en lugar de un BUTTON o INPUT TYPE=SUBMIT -->
                 <div id="fake-button" role="button" aria-label="Ejecutar consulta" onclick="alert('Buscando...')"
-                    style="padding: 10px; background: #007bb5; color: white; cursor: pointer; border-radius: 4px;">
+                    style="padding: 10px; background: #f3f3f3; color: rgb(0, 0, 0); cursor: pointer; border-radius: 4px;">
                     Buscar
                 </div>
+
+                <!--boton con texto-->
+                <button id="real-button" onclick="alert('Buscando...')" style="border: 0px;">
+                    Buscar real
+                </button>
+
+
+                <!--boton sin texto-->
+                <button id="real-button_no_text" onclick="alert('Buscando...')" style="width: 100px; border: 0px;">
+                </button>
             </div>
         </div>
     </section>
@@ -69,7 +79,7 @@
                 /* CRÍTICO: Impide que las imágenes bajen (no hay wrap) */
                 width: fit-content;
                 /* Obliga al contenedor a estirarse horizontalmente */
-                border: 3px solid red;
+                border: 3px solid rgb(196, 193, 193);
                 padding: 10px;
             }
 
@@ -99,7 +109,7 @@
         <div style="
     width: 100%; 
     height: 2.8em; 
-    border: 2px solid red; 
+    border: 2px solid rgb(197, 191, 191); 
     overflow: hidden; 
     word-wrap: break-word; 
     overflow-wrap: break-word;
@@ -130,7 +140,7 @@
             </p>
         </div>
 
-        <div style="overflow: hidden; border: 2px solid red; width: 300px; background: #eee;">
+        <div style="overflow: hidden; border: 2px solid rgb(210, 206, 206); width: 300px; background: #eee;">
             <p style="margin: 5px; font-weight: bold; color: red;">❌ INCUMPLE SC 2.2.2</p>
             <div style="display: flex; width: 600px; animation: slide 5s linear infinite;">
                 <img src="Playa1.jpg" style="width: 150px; height: auto;" alt="Playa">
@@ -153,7 +163,8 @@
         </style>
 
 
-        <div style="overflow: hidden; border: 2px solid green; width: 300px; background: #eee; margin-top: 20px;">
+        <div
+            style="overflow: hidden; border: 2px solid rgb(171, 177, 171); width: 300px; background: #eee; margin-top: 20px;">
             <p style="margin: 5px; font-weight: bold; color: green;">✅ CUMPLE SC 2.2.2</p>
 
             <div id="carruselCumple" style="display: flex; width: 600px; animation: slide 10s linear infinite;">
@@ -224,8 +235,13 @@
                 </tr>
                 <tr>
                     <td>9.2.5.3</td>
-                    <td>Label in nanme</td>
-                    <td>Nomnre accesible diferente al visual</td>
+                    <td>Label in name</td>
+                    <td>Nombre accesible diferente al visual</td>
+                </tr>
+                <tr>
+                    <td>9.1.4.11</td>
+                    <td>Contraste NO textual</td>
+                    <td>Botones con contraste de fondo insuficiente (2 casos)</td>
                 </tr>
                 <tr>
                     <td>9.2.1.1</td>
