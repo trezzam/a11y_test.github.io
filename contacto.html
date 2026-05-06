@@ -30,33 +30,34 @@
     </style>
 </head>
 
-<body>
+<body class="page-with-focus">
     <header>
         <img src="logoGrullo.png" id="logo">
         <nav>
             <ul class="main-menu">
-                <li><a href="index.html">La casa</a></li>
+                <li><a href="index.html" tabindex="1">La casa</a></li>
                 <li class="has-submenu">
-                    <a href="#">Actividades</a>
+                    <a href="#" tabindex="3">Actividades</a>
                     <ul class="submenu">
                         <li><a href="mar.html">Mar</a></li>
                         <li><a href="montana.html">Montaña</a></li>
                         <li><a href="en-casa.html">En la casa</a></li>
                     </ul>
                 </li>
-                <li><a href="reserva.html">Reserva</a></li>
+                <li><a href="reserva.html" id="menuReserva">Reserva</a></li>
                 <li><a href="contacto.html">Contáctanos</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <h1>Por cualquier cosa...estamos aquí</h1>
+        <h1 id="tituloContacto" tabindex="-1">Por cualquier cosa...estamos aquí</h1>
         <p>Si tienes alguna duda sobre nuestra casa en Teruel, escríbenos.</p>
 
         <div class="form-container">
             <div class="field-group">
-                <input type="text" id="nombre_del_usuario" placeholder="Nombre completo" style="width: 100%;">
+                <input type="text" id="nombre_del_usuario" placeholder="Nombre completo" style="width: 100%;"
+                    tabindex="2">
             </div>
 
             <div class="field-group">
@@ -93,7 +94,7 @@
                 <p>El audio se ha iniciado automáticamente (Duración: 6s).</p>
 
                 Este es un botón sin función con atajo
-                <button id="btnAtajo" aria-label="Prueba de autocompletado" accesskey="M"
+                <button id="btnAtajo" aria-label="Prueba de autocompletado" accesskey="M" tabindex="4"
                     onclick="alert('pulsado (Alt+m)')">
                     Pulsame (Atajo: Alt + M)
                 </button>
@@ -155,6 +156,11 @@
                     <td>Se ha creado un botón con un atajo de teclado (Alt + M con accesskey y N con JS) para probar la
                         accesibilidad.</td>
                 </tr>
+                <tr>
+                    <td>9.2.4.3</td>
+                    <td>Orden del foco</td>
+                    <td>Se ha alterado el orden del foco para probar la accesibilidad.</td>
+                </tr>
             </tbody>
         </table>
 
@@ -199,6 +205,62 @@
         });
 
         btnMute?.addEventListener('click', detenerAudio);
+
+        const btnAtajo = document.getElementById('btnAtajo');
+        const menuReserva = document.getElementById('menuReserva');
+        const inputCorreo = document.getElementById('correito');
+        const btnAtajo2 = document.getElementById('btnAtajo2');
+        const inputDireccion = document.getElementById('direccion_entrega');
+        const tituloContacto = document.getElementById('tituloContacto');
+        const enlaceLaCasa = document.querySelector('.main-menu a[href="index.html"]');
+
+        const secuenciaAlterada = [btnAtajo, menuReserva, inputCorreo, btnAtajo2, inputDireccion]
+            .filter(Boolean);
+
+        secuenciaAlterada.forEach((elemento, indice) => {
+            elemento.addEventListener('keydown', (event) => {
+                if (event.key !== 'Tab') {
+                    return;
+                }
+
+                const siguiente = secuenciaAlterada[indice + 1];
+                const anterior = secuenciaAlterada[indice - 1];
+
+                if (!event.shiftKey && siguiente) {
+                    event.preventDefault();
+                    siguiente.focus();
+                }
+
+                if (event.shiftKey && anterior) {
+                    event.preventDefault();
+                    anterior.focus();
+                }
+            });
+        });
+
+        inputDireccion?.addEventListener('keydown', (event) => {
+            if (event.key === 'Tab' && !event.shiftKey && tituloContacto) {
+                event.preventDefault();
+                tituloContacto.focus();
+            }
+        });
+
+        tituloContacto?.addEventListener('keydown', (event) => {
+            if (event.key !== 'Tab') {
+                return;
+            }
+
+            if (event.shiftKey && inputDireccion) {
+                event.preventDefault();
+                inputDireccion.focus();
+                return;
+            }
+
+            if (enlaceLaCasa) {
+                event.preventDefault();
+                enlaceLaCasa.focus();
+            }
+        });
 
         // Nota técnica: Los navegadores modernos bloquean el autoplay 
         // a menos que haya habido una interacción previa o el audio esté muteado de origen.
