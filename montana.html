@@ -74,6 +74,44 @@
             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
 
         </iframe>
+
+        <div class="test-controls-container" style="margin: 20px 0; padding: 15px; border: 2px dashed red;">
+            <h3>Controles de Prueba (Detector SC 4.1.2)</h3>
+
+            <div class="fake-tabs" style="margin-bottom: 15px;">
+                <span class="fake-tab" style="padding: 5px 10px; background: #ddd; cursor: pointer;"
+                    onclick="alert('Tab 1')">Rutas Cortas</span>
+                <span class="fake-tab" style="padding: 5px 10px; background: #eee; cursor: pointer;"
+                    onclick="alert('Tab 2')">Rutas Largas</span>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <span class="fake-checkbox"
+                    style="display: inline-block; width: 15px; height: 15px; border: 1px solid #000; text-align: center; line-height: 15px; cursor: pointer;"
+                    onclick="this.innerHTML = this.innerHTML === '✓' ? '' : '✓'">✓</span>
+                <label>Quiero recibir notificaciones de nuevas rutas</label>
+            </div>
+
+            <div>
+                <span class="fake-dropdown-trigger" style="padding: 5px; border: 1px solid #ccc; cursor: pointer;"
+                    onclick="alert('Desplegando opciones...')">
+                    Filtrar por dificultad ▼
+                </span>
+            </div>
+
+            <div style="margin-top: 15px; border: 1px solid #000;">
+                <div class="fake-accordion-trigger"
+                    style="background: #f0f0f0; padding: 10px; cursor: pointer; font-weight: bold;"
+                    onclick="var content = document.getElementById('collapsible-content'); content.style.display = content.style.display === 'none' ? 'block' : 'none';">
+                    Detalles de la dificultad de la ruta (Hacer clic para abrir)
+                </div>
+                <div id="collapsible-content" style="display: none; padding: 10px; border-top: 1px solid #000;">
+                    <p>Estas rutas requieren calzado de montaña y una buena preparación física debido al desnivel
+                        acumulado.</p>
+                </div>
+            </div>
+        </div>
+
         <table border="1">
             <thead>
                 <tr>
@@ -181,6 +219,13 @@
                     <td>Controles de usuario para multimedia</td>
                     <td>Los controles del reproductor (Play, Stop, Volumen, CC) deben ser accesibles por teclado y
                         compatibles con lectores de pantalla.</td>
+                </tr>
+                <tr>
+                    <td>9.4.1.2</td>
+                    <td>Nombre, función y valor (WCAG 2.1)</td>
+                    <td>Los elementos interactivos simulados (enlaces, pestañas, checkbox y desplegables creados con
+                        span/div) carecen de roles semánticos y no notifican sus estados o valores a las tecnologías de
+                        asistencia, limitándose a anunciar que son simplemente "cliqueables".</td>
                 </tr>
             </tbody>
         </table>
