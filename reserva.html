@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <title>Reserva - Casa Rural El Grullo</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body { margin: 0; padding: 0; font-family: sans-serif; }
-        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
         .booking-row {
             display: flex;
             flex-direction: row;
@@ -15,12 +20,22 @@
             background: #eeeeee;
             padding: 20px;
             width: 95%;
-            height: 400px; 
+            height: 400px;
             margin: 20px auto;
         }
 
-        .field-container { display: flex; flex-direction: column; position: relative; }
-        .label-fake { font-size: 12px; margin-bottom: 4px; color: #555; font-weight: bold; }
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .label-fake {
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: #555;
+            font-weight: bold;
+        }
 
         /* Calendario */
         .calendar-wrapper {
@@ -35,23 +50,69 @@
             padding: 10px;
         }
 
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 11px; }
-        .cal-day { padding: 5px; cursor: pointer; border: 1px solid #eee; }
-        .cal-day:hover { background: #00ffd5; }
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .cal-day {
+            padding: 5px;
+            cursor: pointer;
+            border: 1px solid #eee;
+        }
+
+        .cal-day:hover {
+            background: #00ffd5;
+        }
 
         /* MENÚ SIN BACKGROUND (Fallo de contraste al desplegar) */
-        nav ul { list-style: none; display: flex; gap: 20px; padding: 15px; margin: 0; }
-        nav ul li a { color: #333; text-decoration: none; }
-        .no-link { color: #666; cursor: default; }
-        .submenu { display: none; position: absolute; padding: 10px; flex-direction: column; }
-        li:hover .submenu { display: flex; }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            padding: 15px;
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .no-link {
+            color: #666;
+            cursor: default;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            padding: 10px;
+            flex-direction: column;
+        }
+
+        li:hover .submenu {
+            display: flex;
+        }
 
         /* Animación de parpadeo para "Buscando..." */
         @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0; }
-            100% { opacity: 1; }
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
+
         .buscando {
             display: none;
             color: red;
@@ -59,13 +120,25 @@
             animation: blink 0.8s infinite;
             margin-top: 10px;
         }
-        #d-in, #d-out, #m-in, #m-out {width:27px;}
+
+        #d-in,
+        #d-out,
+        #m-in,
+        #m-out {
+            width: 27px;
+        }
+
         /* Estilo para campos deshabilitados visualmente */
-        input:disabled, select:disabled { opacity: 0.5; cursor: not-allowed; }
+        input:disabled,
+        select:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
+
 <body>
-<header>
+    <header>
         <img src="logoGrullo.png" id="logo">
         <nav>
             <ul class="main-menu">
@@ -80,13 +153,14 @@
                 </li>
                 <li><a href="reserva.html">Reserva</a></li>
                 <li><a href="contacto.html">Contáctanos</a></li>
+                <li><a href="documentos.html">Documentos</a></li>
             </ul>
         </nav>
     </header>
 
     <main style="padding: 20px;">
         <h1>Reserva tu estancia</h1>
-        
+
         <div class="booking-row">
             <div class="field-container">
                 <span class="label-fake">Entrada</span>
@@ -96,7 +170,9 @@
                     <input type="text" id="a-in" placeholder="AAAA" style="width: 50px;" readonly>
                     <button class="btn-cal" onclick="toggleCalendar('cal-in', 'in')">📅</button>
                     <div id="cal-in" class="calendar-wrapper">
-                        <div class="cal-header"><button onclick="changeMonth(-1, 'in')"><</button> <span id="month-year-in"></span> <button onclick="changeMonth(1, 'in')">></button></div>
+                        <div class="cal-header"><button onclick="changeMonth(-1, 'in')">
+                                << /button> <span id="month-year-in"></span> <button
+                                        onclick="changeMonth(1, 'in')">></button></div>
                         <div class="cal-grid" id="days-grid-in"></div>
                     </div>
                 </div>
@@ -110,7 +186,9 @@
                     <input type="text" id="a-out" placeholder="AAAA" style="width: 50px;" readonly>
                     <button class="btn-cal" id="btn-out" onclick="toggleCalendar('cal-out', 'out')" disabled>📅</button>
                     <div id="cal-out" class="calendar-wrapper">
-                        <div class="cal-header"><button onclick="changeMonth(-1, 'out')"><</button> <span id="month-year-out"></span> <button onclick="changeMonth(1, 'out')">></button></div>
+                        <div class="cal-header"><button onclick="changeMonth(-1, 'out')">
+                                << /button> <span id="month-year-out"></span> <button
+                                        onclick="changeMonth(1, 'out')">></button></div>
                         <div class="cal-grid" id="days-grid-out"></div>
                     </div>
                 </div>
@@ -118,7 +196,8 @@
 
             <div class="field-container">
                 <span class="label-fake">Personas</span>
-                <input type="number" id="num-pers" value="1" style="width: 50px;" disabled onchange="checkNext('num-pers', 'room-select')">
+                <input type="number" id="num-pers" value="1" style="width: 50px;" disabled
+                    onchange="checkNext('num-pers', 'room-select')">
             </div>
 
             <div class="field-container">
@@ -152,12 +231,12 @@
             const label = document.getElementById(`month-year-${type}`);
             grid.innerHTML = '';
             label.innerText = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' }).format(targetDate);
-            
+
             const year = targetDate.getFullYear();
             const month = targetDate.getMonth();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            for(let d=1; d<=daysInMonth; d++) {
+            for (let d = 1; d <= daysInMonth; d++) {
                 const dayDiv = document.createElement('div');
                 dayDiv.className = 'cal-day';
                 dayDiv.innerText = d;
@@ -166,17 +245,17 @@
                     document.getElementById(`m-${type}`).value = (month + 1).toString().padStart(2, '0');
                     document.getElementById(`a-${type}`).value = year;
                     document.getElementById(`cal-${type}`).style.display = 'none';
-                    
+
                     // Lógica de desbloqueo secuencial
-                    if(type === 'in') document.getElementById('btn-out').disabled = false;
-                    if(type === 'out') document.getElementById('num-pers').disabled = false;
+                    if (type === 'in') document.getElementById('btn-out').disabled = false;
+                    if (type === 'out') document.getElementById('num-pers').disabled = false;
                 };
                 grid.appendChild(dayDiv);
             }
         }
 
         function checkNext(currentId, nextId) {
-            if(document.getElementById(currentId).value !== "") {
+            if (document.getElementById(currentId).value !== "") {
                 document.getElementById(nextId).disabled = false;
             }
         }
@@ -186,10 +265,11 @@
         }
 
         function changeMonth(diff, type) {
-            if(type === 'in') dateIn.setMonth(dateIn.getMonth() + diff);
+            if (type === 'in') dateIn.setMonth(dateIn.getMonth() + diff);
             else dateOut.setMonth(dateOut.getMonth() + diff);
             renderCalendar(type);
         }
     </script>
 </body>
+
 </html>
